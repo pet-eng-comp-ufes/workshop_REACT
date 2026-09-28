@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTasks from "./components/AddTask";
 import Tasks from "./components/Tasks";
 import { Task } from "./models/Task";
@@ -19,7 +19,11 @@ function App() {
     ),
   ]);
 
-  function onTaskClick(taskId: number) {
+  useEffect(() => {
+    console.log("Tasks foi alterado");
+  }, [tasks]);
+
+  function onTaskClick(taskId: number): void {
     const newTasks = tasks.map((task) => {
       if (task.id === taskId) {
         return { ...task, isCompleted: !task.isCompleted };
@@ -31,25 +35,31 @@ function App() {
     setTasks(newTasks);
   }
 
-  function onTaskDelete(taskId: number) {
+  function onTaskDelete(taskId: number): void {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(newTasks);
   }
 
-  function onAddTaskSubmit(title: string, descripton: string) {
+  function onAddTaskSubmit(title: string, descripton: string): boolean {
     if (title.trim() == "") {
       alert("Título Inválido");
-      return;
+      return false;
     }
 
     if (descripton.trim() == "") {
       alert("Descrição Inválida");
-      return;
+      return false;
     }
 
-    const newTask = new Task(tasks[tasks.length - 1].id + 1, title, descripton);
+    const newTask = new Task(
+      tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 1,
+      title,
+      descripton,
+    );
 
     setTasks([...tasks, newTask]);
+
+    return true;
   }
 
   return (

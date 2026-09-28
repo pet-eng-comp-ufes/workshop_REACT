@@ -1,7 +1,12 @@
 import { useState } from "react";
 
 interface AddTaskProps {
-  onAddTaskSubmit(title: string, descripton: string): void;
+  onAddTaskSubmit(
+    title: string,
+    descripton: string,
+    // setTitulo: (newtitulo: string) => void,
+    // setDescription: (newdescription: string) => void,
+  ): boolean;
 }
 
 function AddTasks({ onAddTaskSubmit }: AddTaskProps) {
@@ -27,7 +32,12 @@ function AddTasks({ onAddTaskSubmit }: AddTaskProps) {
 
       <button
         className="bg-slate-500 p-2 rounded-md text-white"
-        onClick={() => onAddTaskSubmit(title, descripton)}
+        onClick={() => {
+          if (onAddTaskSubmit(title, descripton)) {
+            setTitle("");
+            setDescription("");
+          }
+        }}
       >
         Adicionar
       </button>

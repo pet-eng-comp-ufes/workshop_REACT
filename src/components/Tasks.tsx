@@ -1,6 +1,7 @@
 import { ChevronRightIcon } from "lucide-react";
 import { Trash } from "lucide-react";
 import { Task } from "../models/Task";
+import { useNavigate } from "react-router-dom";
 
 interface TasksProps {
   tasks: Task[];
@@ -10,8 +11,28 @@ interface TasksProps {
 }
 
 function Tasks({ tasks, onTaskClick, onTaskDelete }: TasksProps) {
+  const navigate = useNavigate();
+
+  function onSeeDetailsClick(task: Task) {
+    //forma mais segura
+
+    const query = new URLSearchParams();
+    query.set("title", task.title);
+    query.set("description", task.description);
+
+    navigate(`/task?${query.toString()}`);
+
+    //forma padrão para iniciantes
+
+    // navigate(`/task?title=${task.title}&description=${task.description}`);
+  }
+
   return (
-    <ul className="space-y-4 p-6 bg-slate-200 rounded-md shadow">
+    <ul
+      className={
+        tasks.length > 0 ? "space-y-4 p-6 bg-slate-200 rounded-md shadow" : ""
+      }
+    >
       {tasks.map((task: Task) => {
         return (
           <li key={task.id} className="flex gap-2">
@@ -21,7 +42,10 @@ function Tasks({ tasks, onTaskClick, onTaskDelete }: TasksProps) {
             >
               {task.title}
             </button>
-            <button className="bg-slate-400 text-white p-2 rounded-md">
+            <button
+              onClick={() => onSeeDetailsClick(task)}
+              className="bg-slate-400 text-white p-2 rounded-md"
+            >
               <ChevronRightIcon />
             </button>
 
