@@ -4,10 +4,21 @@ export class Task {
   title: string;
   description: string;
 
-  constructor(id: number, title: string, description: string) {
+  constructor(
+    id: number,
+    title: string,
+    description: string,
+    isCompleted?: boolean,
+  ) {
     this.id = id;
-    this.isCompleted = false;
     this.title = title;
     this.description = description;
+    if (isCompleted !== undefined && isCompleted !== null) {
+      this.isCompleted = isCompleted;
+    } else {
+      this.isCompleted = false;
+    }
+
+    //this.isCompleted = isCompleted ?? false;
   }
 }
